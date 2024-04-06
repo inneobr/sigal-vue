@@ -1,0 +1,14 @@
+.divisor-botton {
+    padding-bottom: 8px;
+    border-bottom: Solid 1px #c0c0c0;
+}
+
+#login-background {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    background-color: white;
+    
+    background: url('../../../public/bg-login.png') center no-repeat; 
+    background-size: cover;   
+}
