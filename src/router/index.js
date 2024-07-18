@@ -13,18 +13,18 @@ const router = createRouter({
                     name: 'dashboard',
                     component: () => import('@/views/pages/Dashboard.vue')
                 },
-                
-                {
-                    path: '/empresa',
-                    name: 'empresa',
-                    component: () => import('@/views/cadastros/Empresa.vue')
-                },
 
                 {
-                    path: '/usuario',
-                    name: 'usuario',
-                    component: () => import('@/views/cadastros/Usuario.vue')
-                },                
+                    path: '/TipoFormacao',
+                    name: 'TipoFormacao',
+                    component: () => import('@/views/cadastros/TipoFormacao.vue')
+                }, 
+                
+                {
+                    path: '/TipoCargos',
+                    name: 'TipoCargos',
+                    component: () => import('@/views/cadastros/TipoCargos.vue')
+                },               
             ]
         },
         {

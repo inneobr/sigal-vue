@@ -109,7 +109,7 @@ import VirtualScroller from 'primevue/virtualscroller';
 import BlockViewer from '@/components/BlockViewer.vue';
 
 import '@/assets/styles.scss';
-import './interceptor';
+//import './interceptor';
 
 const app = createApp(App);
 app.use(store);

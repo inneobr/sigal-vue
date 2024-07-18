@@ -11,8 +11,8 @@ const model = ref([
     {
         label: 'Catastros',
         items: [
-            { label: 'Empresa', icon: 'pi pi-box', to: '/empresa'},
-            { label: 'Usuário', icon: 'pi pi-user', to: '/usuario'}
+            { label: 'TipoCargos', icon: 'pi pi-user', to: '/TipoCargos'},
+            { label: 'TipoFormacao', icon: 'pi pi-user', to: '/TipoFormacao'}
         ]
     },    
 ]);

@@ -6,7 +6,7 @@
                     <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
                         <div class="text-center mb-5">
                             <img src="/favicon.png" alt="Image" height="50" class="mb-3" />
-                            <div class="text-900 text-3xl font-medium mb-3">SISTEMA SIG</div>
+                            <div class="text-900 text-3xl font-medium mb-3">INNEO SISTEMAS</div>
                         </div>
 
                         <Form @submit="handleLogin" :validation-schema="schema">
