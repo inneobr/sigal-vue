@@ -3,7 +3,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="flex justify-content-between gap-2">
-                    <h5>Tipo Formacao</h5>                    
+                    <h5>Tradução</h5>                    
                     <Button type="button" label="Novo" class="--primary-color" icon="pi pi-file" @click="novoRegistro()" />               
                 </div>
                 <Divider />
@@ -20,17 +20,10 @@
                         Carregando... Por favor, aguarde.
                     </template>
                     
-                    <Column field="descricao" header="Descrição"/>
-                    <Column field="tipComplementar" header="Complementar">
-                        <template #body="{ data }">
-                            {{ data.tipComplementar == 1 ? "Sim" : "Não" }}
-                        </template>
-                    </Column>
-                    <Column field="tipPublico" header="Disponivel">
-                        <template #body="{ data }">
-                            {{ data.tipPublico == 1 ? "Sim" : "Não" }}
-                        </template>
-                    </Column>
+                    <Column field="idioma" header="Idioma"/>
+                    <Column field="rotina" header="Rotina"/>
+                    <Column field="chave" header="Chave"/>
+                    <Column field="traducao" header="Tradução"/>
                     <Column header="Opções">
                         <template #body="{ data }">
                             <div class="flex gap-2">
@@ -50,29 +43,25 @@
         </div>
     </div>
 
-    <Dialog v-model:visible="onDialog" class="flex flex-col col-6" header="RH 2.0 - TIPO FORMAÇÃO" :modal="true"> 
+    <Dialog v-model:visible="onDialog" class="flex flex-col col-6" header="RH 2.0 - TRADUÇÃO" :modal="true"> 
         <div class="divisor-botton mb-4"/>  
             <div class="formgrid grid">
-            <div class="field col-12 md:col-2">
-                <label for="id">ID</label>
-                <inputText id="id" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.id" placeholder="ID" disabled="true"/>
-            </div>
-            <div class="field col-12 md:col-10">
-                <label for="descricao">Descrição</label>
-                <inputText id="descricao" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.descricao" placeholder="Descricao"/> 
+            <div class="field col-12 md:col-4">
+                <label for="idioma">Idioma</label>
+                <Dropdown id="idioma" v-model="selected.idioma" editable :options="idiomaEnum" optionLabel="name" optionValue="value" placeholder="Selecione" class="w-full"/>   
             </div> 
-            <div class="field col-12 md:col-4">
-                <label for="formacao">Formação</label>
-                <Dropdown v-model="selected.tipFormacao" editable :options="formacaoEnum" optionLabel="name" optionValue="value" placeholder="Selecione" class="w-full"/>   
-            </div>   
-            <div class="field col-12 md:col-4">
-                <label for="complementar">Complementar</label>
-                <Dropdown v-model="selected.tipComplementar" editable :options="complementarEnum" optionLabel="name" optionValue="value" placeholder="Selecione" class="w-full"/>   
+            <div class="field col-12 md:col-8">
+                <label for="rotina">Rotina</label>
+                <inputText id="rotina" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.rotina" placeholder="Rotina"/> 
             </div> 
-            <div class="field col-12 md:col-4">
-                <label for="publico">Disponível</label>
-                <Dropdown v-model="selected.tipPublico" editable :options="disponivelEnum" optionLabel="name" optionValue="value" placeholder="Selecione" class="w-full"/>   
-            </div>   
+            <div class="field col-12 md:col-6">
+                <label for="chave">Chave</label>
+                <inputText id="chave" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.chave" placeholder="Chave"/> 
+            </div> 
+            <div class="field col-12 md:col-6">
+                <label for="traducao">Tradução</label>
+                <inputText id="traducao" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.traducao" placeholder="Traducao"/> 
+            </div> 
         </div>  
         <div class="divisor-botton"/>
         <template #footer>
@@ -83,7 +72,7 @@
 </template>
 
 <script>
-    import TipoFormacaoService from '../../service/TipoFormacaoService';
+    import TraducaoService from '../../service/TraducaoService';
     export default {
         name: 'Formacao',
         data() {
@@ -96,16 +85,16 @@
                 pageSize: 15,
                 selected: {},
                 onDialog: false,
-                totalElementos: 0, 
+                totalElementos: 0,
 
-                formacaoEnum: [],
-                disponivelEnum: [],
-                complementarEnum: []
+                idiomaEnum: [
+                    {name: "Portugues", value: 1}
+                ]
             }
         },
         methods: {
             async getPagina(){
-                await TipoFormacaoService.findAll(this.pagina, this.pageSize)
+                await TraducaoService.findAll(this.pagina, this.pageSize)
                     .then(({ data }) => {
                         this.database        = data.content;  
                         this.pageSize        = data.pageable.pageSize;
@@ -125,7 +114,7 @@
                 );
             },
             async salvarRegistro(){
-                await TipoFormacaoService.save(this.selected)
+                await TraducaoService.save(this.selected)
                 .then(({ data }) => {
                     this.$toast.add({ 
                         severity: 'success', 
@@ -144,7 +133,7 @@
                 this.clearRegistro();
             },
             async deletarRegistro(id){          
-                await TipoFormacaoService.deleteRegister(id)
+                await TraducaoService.deleteRegister(id)
                 .then(({ data }) => {
                     this.$toast.add({ 
                         severity: 'success', 
@@ -161,25 +150,7 @@
                         
                     this.clearRegistro();
                 });
-            },
-            async getFormacaoEnum(){
-                await TipoFormacaoService.formacaoEnum()
-                    .then(({ data }) => {
-                        this.formacaoEnum = data;                    
-                    });             
-            },
-            async getComplementarEnum(){
-                await TipoFormacaoService.complementarEnum()
-                    .then(({ data }) => {
-                        this.complementarEnum = data;                    
-                    });             
-            },
-            async getDisponivelEnum(){
-                await TipoFormacaoService.disponivelEnum()
-                    .then(({ data }) => {
-                        this.disponivelEnum = data;                    
-                    });             
-            },
+            },            
             novoRegistro(){
                 this.selected = {};
                 this.onDialog = true;
@@ -202,9 +173,6 @@
         },
         created() {
             this.getPagina();
-            this.getFormacaoEnum();
-            this.getDisponivelEnum();
-            this.getComplementarEnum();
         }
     }
 </script>

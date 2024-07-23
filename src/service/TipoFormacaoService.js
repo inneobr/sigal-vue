@@ -9,18 +9,7 @@ class TipoFormacaoService {
             }
         }
         return axios.post(`${ ApiService.urlbase }/api/v1/TipoFormacao`, data, config);
-    }
-
-    findByUnique(data ) {
-        const body = {
-            Tipo:       data.getTipo(),
-	        Descricao:  data.getDescricao()
-        } 
-        const headers = {
-            'content-type': 'application/json'
-        }
-        return axios.get(`${ ApiService.urlbase }/api/v1/TipoFormacao/id`, body, { headers });    
-    } 
+    }  
 
     filter(data, pagina, pageSize ) {
         const body = {
@@ -44,8 +33,20 @@ class TipoFormacaoService {
         });    
     }
     
-    deleteRegister(filtro) {
-        return axios.delete(`${ ApiService.urlbase }/api/v1/TipoFormacao`, filtro); 
+    deleteRegister(id) {
+        return axios.delete(`${ ApiService.urlbase }/api/v1/TipoFormacao/${id}`); 
     } 
+
+    formacaoEnum(){
+        return axios.get(`${ ApiService.urlbase }/api/v1/TipoFormacao/tipFormacao`); 
+    }
+
+    complementarEnum(){
+        return axios.get(`${ ApiService.urlbase }/api/v1/TipoFormacao/tipComplementar`); 
+    }
+
+    disponivelEnum(){
+        return axios.get(`${ ApiService.urlbase }/api/v1/TipoFormacao/tipPublico`); 
+    }
 }
 export default new TipoFormacaoService();

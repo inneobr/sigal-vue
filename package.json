@@ -1,5 +1,5 @@
 {
-    "name": "sig-sistemas",
+    "name": "rh-web",
     "version": "3.10.0",
     "scripts": {
         "dev": "vite",

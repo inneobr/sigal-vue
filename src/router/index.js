@@ -24,7 +24,13 @@ const router = createRouter({
                     path: '/TipoCargos',
                     name: 'TipoCargos',
                     component: () => import('@/views/cadastros/TipoCargos.vue')
-                },               
+                }, 
+                
+                {
+                    path: '/Traducao',
+                    name: 'Traducao',
+                    component: () => import('@/views/sistema/Traducao.vue')
+                },
             ]
         },
         {
