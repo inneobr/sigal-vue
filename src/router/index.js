@@ -19,6 +19,12 @@ const router = createRouter({
                     name: 'TipoFormacao',
                     component: () => import('@/views/cadastros/TipoFormacao.vue')
                 }, 
+
+                {
+                    path: '/Cbos',
+                    name: 'Cbos',
+                    component: () => import('@/views/cadastros/Cbos.vue')
+                },
                 
                 {
                     path: '/TipoCargos',

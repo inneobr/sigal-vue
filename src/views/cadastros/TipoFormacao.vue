@@ -3,7 +3,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="flex justify-content-between gap-2">
-                    <h5>Tipo Formacao</h5>                    
+                    <h5>Tipo Formação</h5>                    
                     <Button type="button" label="Novo" class="--primary-color" icon="pi pi-file" @click="novoRegistro()" />               
                 </div>
                 <Divider />
@@ -20,7 +20,7 @@
                         Carregando... Por favor, aguarde.
                     </template>
                     
-                    <Column field="descricao" header="Descrição"/>
+                    <Column class="w-full" field="descricao" header="Descrição"/>
                     <Column field="tipComplementar" header="Complementar">
                         <template #body="{ data }">
                             {{ data.tipComplementar == 1 ? "Sim" : "Não" }}

@@ -20,7 +20,11 @@
                         Carregando... Por favor, aguarde.
                     </template>
                     
-                    <Column field="idioma" header="Idioma"/>
+                    <Column field="idioma" header="Idioma">
+                        <template #body="{ data }">
+                            {{ data.idioma == 1 ? "Português" : "Outros" }}
+                        </template>
+                    </Column>
                     <Column field="rotina" header="Rotina"/>
                     <Column field="chave" header="Chave"/>
                     <Column field="traducao" header="Tradução"/>
@@ -88,7 +92,8 @@
                 totalElementos: 0,
 
                 idiomaEnum: [
-                    {name: "Portugues", value: 1}
+                    {name: "Portugues", value: 1},
+                    {name: "Outros", value: 2}
                 ]
             }
         },

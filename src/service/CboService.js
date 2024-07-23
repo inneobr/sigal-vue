@@ -2,21 +2,21 @@ import ApiService from '../utilities/ApiService';
 import axios from 'axios';
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
-class TipoCargosService {
+class CboService {
     save(data) {
         const config = {
             headers: {
                 'content-type': 'application/json'
             }
         }
-        return axios.post(`${ ApiService.urlbase }/api/v1/TipoCargos`, data, config);
+        return axios.post(`${ ApiService.urlbase }/api/v1/Cbos`, data, config);
     }  
 
     filter(data, pagina, pageSize ) {
         const body = {
             descricao:  data.getDescricao()
         } 
-        return axios.get(`${ ApiService.urlbase }/api/v1/TipoCargos/filter`, body,  {
+        return axios.get(`${ ApiService.urlbase }/api/v1/Cbos/filter`, body,  {
             params: {
                 page: pagina,
                 size: pageSize
@@ -25,7 +25,7 @@ class TipoCargosService {
     }
 
     findAll(pagina, pageSize ) {        
-        return axios.get(`${ ApiService.urlbase }/api/v1/TipoCargos`, {
+        return axios.get(`${ ApiService.urlbase }/api/v1/Cbos`, {
             params: {
                 page: pagina,
                 size: pageSize
@@ -34,7 +34,7 @@ class TipoCargosService {
     }
     
     deleteRegister(id) {
-        return axios.delete(`${ ApiService.urlbase }/api/v1/TipoCargos/${id}`); 
+        return axios.delete(`${ ApiService.urlbase }/api/v1/Cbos/${id}`); 
     } 
 }
-export default new TipoCargosService();
+export default new CboService();
