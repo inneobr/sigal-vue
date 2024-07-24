@@ -21,6 +21,7 @@ const model = ref([
         label: 'Catastros',
         items: [
             { label: 'Cbos',            icon: 'pi pi-book', to: '/Cbos'},
+            { label: 'GruposMatricula', icon: 'pi pi-book', to: '/GruposMatricula'},
             { label: 'TipoCargos',      icon: 'pi pi-book', to: '/TipoCargos'},
             { label: 'TipoFormacao',    icon: 'pi pi-book', to: '/TipoFormacao'},
         ]

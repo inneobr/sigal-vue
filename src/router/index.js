@@ -25,6 +25,12 @@ const router = createRouter({
                     name: 'Cbos',
                     component: () => import('@/views/cadastros/Cbos.vue')
                 },
+
+                {
+                    path: '/GruposMatricula',
+                    name: 'GruposMatricula',
+                    component: () => import('@/views/cadastros/GruposMatricula.vue')
+                },
                 
                 {
                     path: '/TipoCargos',
