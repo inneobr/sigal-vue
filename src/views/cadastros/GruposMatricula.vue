@@ -18,14 +18,16 @@
  
                     <template #loading>
                         Carregando... Por favor, aguarde.
-                    </template>   
- 
+                    </template> 
+
+                    <Column field="grupo" header="Grupo"/>
                     <Column field="descricao" header="Descrição"/>
-                    <Column class="w-full" field="matricula" header="Última Cadastrada"/>
+                    <Column field="matriculaCad" header="Última Cadastrada"/>
+                    <Column field="obs" header="Observações"/>
                     <Column header="Opções">
                         <template #body="{ data }">
                             <div class="flex gap-2">
-                                <Button class="p-button-rounded" icon="pi pi-pencil" severity="info"    outlined @click="alterarRegistro(data)" />
+                                <Button class="p-button-rounded" icon="pi pi-pencil" severity="--primary-color"    outlined @click="alterarRegistro(data)" />
                                 <Button class="p-button-rounded" icon="pi pi-trash"  severity="warning" outlined @click="deletarRegistro(data.id)" />
                             </div>
                         </template>
@@ -42,20 +44,25 @@
     </div>
  
     <Dialog v-model:visible="onDialog" class="flex flex-col col-6" header="RH 2.0 - TRADUÇÃO" :modal="true"> 
-        <div class="divisor-botton mb-4"/>  
+        <div class="divisor-botton mb-4"></div>  
             <div class="formgrid grid">         
             <div class="field col-12 md:col-12">
-                <label for="descricao">Descrição</label>
+                <label for="descricao">Descrição Grupo</label>
                 <inputText id="descricao" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.descricao" placeholder="Descrição"/> 
             </div> 
             <div class="field col-12 md:col-12">
-                <label for="matricula">Cadastrada</label>
+                <label for="matricula">Última Matrícula Cadastrada</label>
                 <inputText id="matricula" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.matricula" placeholder="Ultima cadastrada"/> 
             </div> 
+          
             <div class="field col-12 md:col-12">
                 <label for="obs">Obs</label>
                 <Textarea id="obs" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.obs" placeholder="Observações" rows="5" cols="30" />
             </div> 
+
+            <div class="field col-12 md:col-12">
+                <GrupoMatriculaFaixas v-show="selected.id" :grupo="selected.id"/>
+            </div>
         </div>  
         <div class="divisor-botton"/>
         <template #footer>
@@ -66,12 +73,15 @@
  </template>
  
  <script>
-    import GruposMatriculaService from '../../service/GruposMatriculaService';
+    import GruposMatriculaService from '@service/GruposMatriculaService';
+    import GrupoMatriculaFaixas from '@components/GrupoMatriculaFaixas.vue'
     export default {
-        name: 'Formacao',
+        name: 'Grupo Matricula',
+        components: { GrupoMatriculaFaixas },
         data() {
             return {
-                database: [],                
+                database: [], 
+                dataslave: [],               
                 registro: null,
  
                 pagina: 0, 

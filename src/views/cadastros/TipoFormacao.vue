@@ -83,7 +83,7 @@
 </template>
 
 <script>
-    import TipoFormacaoService from '../../service/TipoFormacaoService';
+    import TipoFormacaoService from '@service/TipoFormacaoService';
     export default {
         name: 'Formacao',
         data() {

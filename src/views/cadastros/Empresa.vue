@@ -88,7 +88,7 @@
  </template>
  
  <script>  
-   import EmpresaService from '../../service/EmpresaService';
+   import EmpresaService from '@service/EmpresaService';
    export default {
       name: 'Register Empresa',
       props: {

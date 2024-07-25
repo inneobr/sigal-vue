@@ -57,7 +57,7 @@
 </template>
 
 <script>
-   import TipoCargosService from '../../service/TipoCargosService';
+   import TipoCargosService from '@service/TipoCargosService';
    export default {
        name: 'Formacao',
        data() {

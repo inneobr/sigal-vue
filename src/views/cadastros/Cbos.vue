@@ -62,7 +62,7 @@
 </template>
 
 <script>
-   import CboService from '../../service/CboService';
+   import CboService from '@service/CboService';
    export default {
        name: 'Formacao',
        data() {

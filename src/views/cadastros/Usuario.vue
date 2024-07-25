@@ -97,7 +97,7 @@
  </template>
  
  <script>  
-   import UsuarioService from '../../service/UsuarioService';
+   import UsuarioService from '@service/UsuarioService';
    export default {
       name: 'Register Empresa',    
       
