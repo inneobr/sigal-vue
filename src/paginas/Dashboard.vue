@@ -166,8 +166,8 @@
 </template>
 
 <script>
-    import DashboardServices from '../../service/DashboardServices';
-    import Formatacao from '../../utilities/Formatacao';
+    import services from '@service/DashboardServices';
+    import Formatacao from '../utilities/Formatacao';
     export default {
         data() {
             return {
@@ -214,7 +214,7 @@
         },
         methods: {
             getCotacao() {
-                DashboardServices.getCotacao()
+                services.getCotacao()
                     .then(({ data }) => {
                         if(data) {
                             this.moeda = data; 
@@ -229,7 +229,7 @@
                     });
             },
             getFeriados(){
-                DashboardServices.getFeriados() 
+                services.getFeriados() 
                     .then(({ data }) => {
                         if(data) {
                             data.map(item => {

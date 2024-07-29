@@ -34,7 +34,11 @@ class TipoFormacaoService {
     }
     
     deleteRegister(id) {
-        return axios.delete(`${ ApiService.urlbase }/api/v1/TipoFormacao/${id}`); 
+        return axios.delete(`${ ApiService.urlbase }/api/v1/TipoFormacao`, {
+            params: {
+                id: id
+            }
+        });  
     } 
 
     formacaoEnum(){

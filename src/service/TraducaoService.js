@@ -35,7 +35,11 @@ class TraducaoService {
     }
     
     deleteRegister(id) {
-        return axios.delete(`${ ApiService.urlbase }/api/v1/Traducao/${id}`); 
+        return axios.delete(`${ ApiService.urlbase }/api/v1/Traducao`, {
+            params: {
+                id: id
+            }
+        });  
     }   
 }
 export default new TraducaoService();

@@ -10,38 +10,68 @@ const router = createRouter({
             children: [
                 {
                     path: '/',
-                    name: 'dashboard',
-                    component: () => import('@/views/pages/Dashboard.vue')
+                    name: 'Dashboard',
+                    component: () => import('@paginas/Dashboard.vue')
+                },
+
+                {
+                    path: '/Menu',
+                    name: 'Menu',
+                    component: () => import('@paginas/Menu.vue')
+                },
+
+                {
+                    path: '/Rotinas',
+                    name: 'Rotinas',
+                    component: () => import('@paginas/Rotinas.vue')
+                },
+
+                {
+                    path: '/Nacionalidade',
+                    name: 'Nacionalidade',
+                    component: () => import('@paginas/Nacionalidade.vue')
+                },
+
+                {
+                    path: '/Vinculos',
+                    name: 'Vinculos',
+                    component: () => import('@paginas/Vinculos.vue')
                 },
 
                 {
                     path: '/TipoFormacao',
                     name: 'TipoFormacao',
-                    component: () => import('@/views/cadastros/TipoFormacao.vue')
-                }, 
+                    component: () => import('@paginas/TipoFormacao.vue')
+                },
+                
+                {
+                    path: '/Jurisdicoes',
+                    name: 'Jurisdicoes',
+                    component: () => import('@paginas/Jurisdicoes.vue')
+                },
 
                 {
                     path: '/Cbos',
                     name: 'Cbos',
-                    component: () => import('@/views/cadastros/Cbos.vue')
+                    component: () => import('@paginas/Cbos.vue')
                 },
 
                 {
                     path: '/GruposMatricula',
                     name: 'GruposMatricula',
-                    component: () => import('@/views/cadastros/GruposMatricula.vue')
+                    component: () => import('@paginas/GruposMatricula.vue')
                 },
                 
                 {
                     path: '/TipoCargos',
                     name: 'TipoCargos',
-                    component: () => import('@/views/cadastros/TipoCargos.vue')
+                    component: () => import('@paginas/TipoCargos.vue')
                 }, 
                 
                 {
                     path: '/Traducao',
                     name: 'Traducao',
-                    component: () => import('@/views/sistema/Traducao.vue')
+                    component: () => import('@paginas/Traducao.vue')
                 },
             ]
         },

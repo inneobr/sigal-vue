@@ -34,7 +34,11 @@ class GruposMatriculaService {
     }
     
     deleteRegister(id) {
-        return axios.delete(`${ ApiService.urlbase }/api/v1/GruposMatricula/${id}`); 
+        return axios.delete(`${ ApiService.urlbase }/api/v1/GruposMatricula`, {
+            params: {
+                id: id
+            }
+        }); 
     }
 }
 export default new GruposMatriculaService();

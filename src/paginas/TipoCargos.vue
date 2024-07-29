@@ -3,7 +3,7 @@
        <div class="col-12">
            <div class="card">
                <div class="flex justify-content-between gap-2">
-                   <h5>CBOs</h5>                    
+                   <h5>Tipo Cargos</h5>                    
                    <Button type="button" label="Novo" class="--primary-color" icon="pi pi-file" @click="novoRegistro()" />               
                </div>
                <Divider />
@@ -19,8 +19,7 @@
                    <template #loading>
                        Carregando... Por favor, aguarde.
                    </template>   
-                   
-                   <Column field="cbo" header="Descrição"/>
+
                    <Column class="w-full" field="descricao" header="Descrição"/>
                    <Column header="Opções">
                        <template #body="{ data }">
@@ -32,25 +31,21 @@
                    </Column>
                </DataTable>
                <Paginator
-                    v-model:first="firstRow"
-                    :rows="pageSize"
-                    :total-records="totalElementos"
-                    :rowsPerPageOptions="[5, 10, 20, 30]"
-                    @page="onPage" />
+               v-model:first="firstRow"
+                   :rows="pageSize"
+                   :total-records="totalElementos"
+                   :rowsPerPageOptions="[5, 15, 30, 60]"
+                   @page="onPage" />
            </div>
        </div>
    </div>
 
    <Dialog v-model:visible="onDialog" class="flex flex-col col-6" header="RH 2.0 - TRADUÇÃO" :modal="true"> 
        <div class="divisor-botton mb-4"/>  
-           <div class="formgrid grid">     
-            <div class="field col-12 md:col-4">
-               <label for="cbo">Cbo</label>
-               <inputText id="cbo" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.cbo" placeholder="Chave"/> 
-           </div>     
-           <div class="field col-12 md:col-8">
+           <div class="formgrid grid">         
+           <div class="field col-12 md:col-12">
                <label for="descricao">Descrição</label>
-               <inputText id="descricao" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.descricao" placeholder="Chave"/> 
+               <inputText id="descricao" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.descricao" placeholder="Tipo de Cargo"/> 
            </div> 
        </div>  
        <div class="divisor-botton"/>
@@ -62,7 +57,7 @@
 </template>
 
 <script>
-   import CboService from '@service/CboService';
+   import service from '@service/TipoCargosService';
    export default {
        name: 'Formacao',
        data() {
@@ -72,15 +67,20 @@
 
                pagina: 0, 
                firstRow: 0,
-               pageSize: 10,
+               pageSize: 15,
                selected: {},
                onDialog: false,
-               totalElementos: 0
+               totalElementos: 0,
+
+               idiomaEnum: [
+                   {name: "Portugues", value: 1},
+                   {name: "Outros", value: 2}
+               ]
            }
        },
        methods: {
            async getPagina(){
-               await CboService.findAll(this.pagina, this.pageSize)
+               await service.findAll(this.pagina, this.pageSize)
                    .then(({ data }) => {
                        this.database        = data.content;  
                        this.pageSize        = data.pageable.pageSize;
@@ -100,7 +100,7 @@
                );
            },
            async salvarRegistro(){
-               await CboService.save(this.selected)
+               await service.save(this.selected)
                .then(({ data }) => {
                    this.$toast.add({ 
                        severity: 'success', 
@@ -119,7 +119,7 @@
                this.clearRegistro();
            },
            async deletarRegistro(id){          
-               await CboService.deleteRegister(id)
+               await service.deleteRegister(id)
                .then(({ data }) => {
                    this.$toast.add({ 
                        severity: 'success', 

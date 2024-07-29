@@ -1,23 +1,34 @@
 <template> 
-    <Fieldset legend="Faixas Matrícula">
+    <Fieldset legend="Itens Menu">
         <DataTable selectionMode="single" v-model:selection="selected" :value="database" responsiveLayout="stack"> 
             <template #header>
                 <div class="grid">
-                    <div class="field col-12 md:col-3">
-                        <label for="faixa">Nº Faixa</label>
-                        <inputText id="faixa" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.faixa" placeholder="Número Faixa"/> 
+                    <div class="field col-12 md:col-4">
+                        <label for="label">Nome</label>
+                        <inputText id="label" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.label" placeholder="Nome"/> 
                     </div> 
 
-                    <div class="field col-12 md:col-3">
-                        <label for="matriculaInicial">Matrícula Inicial</label>
-                        <inputText id="matriculaInicial" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.matriculaIni" placeholder="Matrícula Inicial"/> 
+                    <div class="field col-12 md:col-4">
+                        <label for="path">Rota</label>
+                        <inputText id="path" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.path" placeholder="Rota"/> 
+                    </div>                   
+
+                    <div class="field col-12 md:col-4">
+                        <label for="icon">Icon</label>
+                        <Dropdown editable v-model="selected.icon" :options="dataicon" optionLabel="label" optionValue="values" placeholder="Selecione" class="w-full"/>
                     </div> 
 
-                    <div class="field col-12 md:col-3">
-                        <label for="matriculaFinal">Matrícula Final</label>
-                        <inputText id="matriculaFinal" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.matriculaFim" placeholder="Matrícula Final"/> 
+                    <div class="field col-12 md:col-4">
+                        <label for="menu">Menu</label>
+                        <Dropdown editable v-model="selected.menuId" :options="menus" optionLabel="label" optionValue="id" placeholder="Selecione" class="w-full"/>   
                     </div> 
-                    <div class="field col-12 md:col-3">
+                    
+                    <div class="field col-12 md:col-4">
+                        <label for="sequencia">Sequência</label>
+                        <inputText id="sequencia" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.sequencia" placeholder="Sequência"/> 
+                    </div> 
+                    
+                    <div class="field col-12 md:col-4">
                         <label class="w-full" for="matriculaFinal">Opções</label>
                         <Button class="p-button p-component p-button-success" label="Save" icon="pi pi-save" severity="info" outlined @click="salvarRegistro()" />
                     </div>
@@ -32,15 +43,15 @@
                 Carregando... Por favor, aguarde.
             </template>   
 
-            <Column field="grupo" header="Grupo"/>
-            <Column field="faixa" header="Faixa"/>
-            <Column field="matriculaIni" header="Matrícula Inicial"/>
-            <Column field="matriculaFim" header="Matrícula Final"/>
+            <Column field="label" header="Nome"/>
+            <Column field="icon" header="Icon"/>
+            <Column field="path" header="Rota"/>
+            <Column field="sequencia" header="Sequência"/>
             <Column header="Opções">
                 <template #body="{ data }">
                     <div class="flex gap-2">
                         <Button class="p-button-rounded" icon="pi pi-pencil" severity="--primary-color"    outlined @click="alterarRegistro(data)" />
-                        <Button class="p-button-rounded" icon="pi pi-trash"  severity="warning" outlined @click="deletarRegistro(data.id)" />
+                        <Button class="p-button-rounded" icon="pi pi-trash"  severity="warning"             outlined @click="deletarRegistro(data.id)" />
                     </div>
                 </template>
             </Column>
@@ -55,14 +66,15 @@
 </template> 
 
 <script>
-    import service from '@service/GruposMatriculaFaixasService';
+    import service from '@service/MenuItemService';
     export default {
-        name: 'Grupo Matricula Faixas',
+        name: 'Items Menu Principal',
         props: {
-            grupo: {
+            menuId: {
                 type: String,
                 required: true
-            }
+            },
+            menus:[],
         },
         data() {
             return {
@@ -74,18 +86,21 @@
                 firstRow: 0,
                 pageSize: 5,
                 selected: {},
-                onDialog: false,
-                totalElementos: 0
+                totalElementos: 0,
+                dataicon: [
+                    {label: 'pi pi-book', value: 'pi pi pi-book'},
+                    {label: 'pi-chart-line', value: 'pi pi-chart-line'}
+                ]
             }
         },
         methods: {
             async getPagina(){ 
-                this.filter.grupo = this.grupo;            
+                this.filter.menuId = this.menuId;            
                 await service.filter(this.filter, this.pagina, this.pageSize)
                     .then(({ data }) => {
                         this.database        = data.content;  
                         this.pageSize        = data.pageable.pageSize;
-                        this.totalElementos  = data.totalElements;                        
+                        this.totalElementos  = data.totalElements;                                            
                     })
                     .catch(error => {
                         this.$toast.add({ 
@@ -101,7 +116,7 @@
                 );
             },
             async salvarRegistro(){
-                this.selected.grupo = this.grupo;
+                this.selected.menuId = this.menuId;
                 await service.save(this.selected)
                 .then(({ data }) => {
                     this.$toast.add({ 
@@ -141,10 +156,8 @@
             },            
             novoRegistro(){
                 this.selected = {};
-                this.onDialog = true;
             },
             alterarRegistro(data){
-                this.onDialog = true;
                 this.selected = data;
             },
             onPage(event) {
@@ -154,7 +167,6 @@
                 this.getPagina();
             },
             clearRegistro(){
-                this.onDialog = false;
                 this.selected = {};
                 this.getPagina();
             }

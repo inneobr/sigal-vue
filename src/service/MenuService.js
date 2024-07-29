@@ -1,30 +1,34 @@
 import ApiService from '../utilities/ApiService';
 import axios from 'axios';
 
-class GruposMatriculaFaixasService {
+class MenuService {
     save(data) {
         const config = {
             headers: {
                 'content-type': 'application/json'
             }
         }
-        return axios.post(`${ ApiService.urlbase }/api/v1/GruposMatriculaFaixas`, data, config);
+        return axios.post(`${ ApiService.urlbase }/api/v1/Menu`, data, config);
     }  
 
-    filter(filter, pagina, pageSize ) { 
+    filter(data, pagina, pageSize ) {
         const body = {
-            grupo: filter.grupo
+            descricao:  data.getDescricao()
         } 
-        return axios.post(`${ ApiService.urlbase }/api/v1/GruposMatriculaFaixas/filter`, body,  {
+        return axios.get(`${ ApiService.urlbase }/api/v1/Menu/filter`, body,  {
             params: {
                 page: pagina,
                 size: pageSize
-            }            
+            }
         });    
     }
 
-    findAll(pagina, pageSize ) {        
-        return axios.get(`${ ApiService.urlbase }/api/v1/GruposMatriculaFaixas`, {
+    findList() {        
+        return axios.get(`${ ApiService.urlbase }/api/v1/Menu/list`);    
+    }
+
+    findAll(pagina, pageSize) {        
+        return axios.get(`${ ApiService.urlbase }/api/v1/Menu`, {
             params: {
                 page: pagina,
                 size: pageSize
@@ -33,11 +37,11 @@ class GruposMatriculaFaixasService {
     }
     
     deleteRegister(id) {
-        return axios.delete(`${ ApiService.urlbase }/api/v1/GruposMatriculaFaixas`, {
+        return axios.delete(`${ ApiService.urlbase }/api/v1/Menu`, {
             params: {
                 id: id
             }
         }); 
     }
 }
-export default new GruposMatriculaFaixasService();
+export default new MenuService();

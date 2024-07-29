@@ -3,7 +3,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="flex justify-content-between gap-2">
-                    <h5>Grupos Matricula</h5>                    
+                    <h5>Nacionalidade</h5>                    
                     <Button type="button" label="Novo" class="--primary-color" icon="pi pi-file" @click="novoRegistro()" />               
                 </div>
                 <Divider />
@@ -19,11 +19,9 @@
                     <template #loading>
                         Carregando... Por favor, aguarde.
                     </template> 
-
-                    <Column field="grupo" header="Grupo"/>
-                    <Column field="descricao" header="Descrição"/>
-                    <Column field="matriculaCad" header="Última Cadastrada"/>
-                    <Column field="obs" header="Observações"/>
+                    <Column field="codigo"     header="Código"/>
+                    <Column field="descricao"  header="Descrição"/>
+                    <Column field="codrais"    header="CodRais"/>
                     <Column header="Opções">
                         <template #body="{ data }">
                             <div class="flex gap-2">
@@ -43,26 +41,23 @@
         </div>
     </div>
  
-    <Dialog v-model:visible="onDialog" class="flex flex-col col-6" header="RH 2.0 - TRADUÇÃO" :modal="true"> 
+    <Dialog v-model:visible="onDialog" class="flex flex-col col-6" header="RH 2.0 - NACIONALIDADE" :modal="true"> 
         <div class="divisor-botton mb-4"></div>  
-            <div class="formgrid grid">         
-            <div class="field col-12 md:col-12">
-                <label for="descricao">Descrição Grupo</label>
+            <div class="formgrid grid">    
+            <div class="field col-12 md:col-2">
+                <label for="codigo">Código</label>
+                <inputText id="codigo" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.codigo" placeholder="Código"/> 
+            </div>   
+
+            <div class="field col-12 md:col-8">
+                <label for="descricao">Jurisdição</label>
                 <inputText id="descricao" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.descricao" placeholder="Descrição"/> 
             </div> 
-            <div class="field col-12 md:col-12">
-                <label for="matricula">Última Matrícula Cadastrada</label>
-                <inputText id="matricula" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.matricula" placeholder="Ultima cadastrada"/> 
-            </div> 
-          
-            <div class="field col-12 md:col-12">
-                <label for="obs">Obs</label>
-                <Textarea id="obs" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.obs" placeholder="Observações" rows="5" cols="30" />
-            </div> 
 
-            <div class="field col-12 md:col-12">
-                <GrupoMatriculaFaixas v-show="selected.id" :grupo="selected.id"/>
-            </div>
+            <div class="field col-12 md:col-2">
+                <label for="codrais">Cod. Rais</label>
+                <inputText id="codrais" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.codrais" placeholder="Cod. Rais"/> 
+            </div> 
         </div>  
         <div class="divisor-botton"/>
         <template #footer>
@@ -73,11 +68,9 @@
  </template>
  
  <script>
-    import GruposMatriculaService from '@service/GruposMatriculaService';
-    import GrupoMatriculaFaixas from '@components/GrupoMatriculaFaixas.vue'
+    import service from '@service/NacionalidadeService';
     export default {
         name: 'Grupo Matricula',
-        components: { GrupoMatriculaFaixas },
         data() {
             return {
                 database: [], 
@@ -94,7 +87,7 @@
         },
         methods: {
             async getPagina(){
-                await GruposMatriculaService.findAll(this.pagina, this.pageSize)
+                await service.findAll(this.pagina, this.pageSize)
                     .then(({ data }) => {
                         this.database        = data.content;  
                         this.pageSize        = data.pageable.pageSize;
@@ -114,7 +107,7 @@
                 );
             },
             async salvarRegistro(){
-                await GruposMatriculaService.save(this.selected)
+                await service.save(this.selected)
                 .then(({ data }) => {
                     this.$toast.add({ 
                         severity: 'success', 
@@ -133,7 +126,7 @@
                 this.clearRegistro();
             },
             async deletarRegistro(id){          
-                await GruposMatriculaService.deleteRegister(id)
+                await service.deleteRegister(id)
                 .then(({ data }) => {
                     this.$toast.add({ 
                         severity: 'success', 

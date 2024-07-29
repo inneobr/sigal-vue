@@ -1,87 +1,82 @@
 <template> 
-    <Fieldset legend="Faixas Matrícula">
-        <DataTable selectionMode="single" v-model:selection="selected" :value="database" responsiveLayout="stack"> 
-            <template #header>
-                <div class="grid">
-                    <div class="field col-12 md:col-3">
-                        <label for="faixa">Nº Faixa</label>
-                        <inputText id="faixa" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.faixa" placeholder="Número Faixa"/> 
-                    </div> 
-
-                    <div class="field col-12 md:col-3">
-                        <label for="matriculaInicial">Matrícula Inicial</label>
-                        <inputText id="matriculaInicial" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.matriculaIni" placeholder="Matrícula Inicial"/> 
-                    </div> 
-
-                    <div class="field col-12 md:col-3">
-                        <label for="matriculaFinal">Matrícula Final</label>
-                        <inputText id="matriculaFinal" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.matriculaFim" placeholder="Matrícula Final"/> 
-                    </div> 
-                    <div class="field col-12 md:col-3">
-                        <label class="w-full" for="matriculaFinal">Opções</label>
-                        <Button class="p-button p-component p-button-success" label="Save" icon="pi pi-save" severity="info" outlined @click="salvarRegistro()" />
-                    </div>
+    <div class="grid">
+        <div class="col-12">
+            <div class="card">
+                <div class="flex justify-content-between gap-2">
+                    <h5>Vinculos - BACKAND NÃO EXISTE</h5>                    
+                    <Button type="button" label="Novo" class="--primary-color" icon="pi pi-file" @click="novoRegistro()" />               
                 </div>
-            </template>
+                <Divider />
+                <DataTable selectionMode="single" v-model:selection="selected" :value="database" responsiveLayout="stack"> 
+                    <template #header>
+ 
+                    </template>
+ 
+                    <template #empty>
+                        Nenhum registro encontrado.
+                    </template>
+ 
+                    <template #loading>
+                        Carregando... Por favor, aguarde.
+                    </template> 
 
-            <template #empty>
-                Nenhum registro encontrado.
-            </template>
-
-            <template #loading>
-                Carregando... Por favor, aguarde.
-            </template>   
-
-            <Column field="grupo" header="Grupo"/>
-            <Column field="faixa" header="Faixa"/>
-            <Column field="matriculaIni" header="Matrícula Inicial"/>
-            <Column field="matriculaFim" header="Matrícula Final"/>
-            <Column header="Opções">
-                <template #body="{ data }">
-                    <div class="flex gap-2">
-                        <Button class="p-button-rounded" icon="pi pi-pencil" severity="--primary-color"    outlined @click="alterarRegistro(data)" />
-                        <Button class="p-button-rounded" icon="pi pi-trash"  severity="warning" outlined @click="deletarRegistro(data.id)" />
-                    </div>
-                </template>
-            </Column>
-        </DataTable>
-        <Paginator
+                    <Column field="descricao" class="w-full" header="Descrição"/>
+                    <Column header="Opções">
+                        <template #body="{ data }">
+                            <div class="flex gap-2">
+                                <Button class="p-button-rounded" icon="pi pi-pencil" severity="--primary-color"    outlined @click="alterarRegistro(data)" />
+                                <Button class="p-button-rounded" icon="pi pi-trash"  severity="warning" outlined @click="deletarRegistro(data.id)" />
+                            </div>
+                        </template>
+                    </Column>
+                </DataTable>
+                <Paginator
                 v-model:first="firstRow"
                     :rows="pageSize"
                     :total-records="totalElementos"
                     :rowsPerPageOptions="[5, 15, 30, 60]"
                     @page="onPage" />
-    </Fieldset>
-</template> 
-
-<script>
-    import service from '@service/GruposMatriculaFaixasService';
+            </div>
+        </div>
+    </div>
+ 
+    <Dialog v-model:visible="onDialog" class="flex flex-col col-6" header="RH 2.0 - VINCULOS" :modal="true"> 
+        <div class="divisor-botton mb-4"></div>  
+            <div class="formgrid grid">         
+            <div class="field col-12 md:col-12">
+                <label for="descricao">Jurisdição</label>
+                <inputText id="descricao" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" v-model="selected.descricao" placeholder="Descrição"/> 
+            </div> 
+        </div>  
+        <div class="divisor-botton"/>
+        <template #footer>
+            <Button label="Cancelar" icon="pi pi-times" class="p-button p-component p-button-danger" @click="dialog = false; onDialog = false;" />
+            <Button label="Salvar"   icon="pi pi-save" class="p-button p-component p-button-success" @click="salvarRegistro()" />
+        </template>
+   </Dialog>
+ </template>
+ 
+ <script>
+    import service from '@service/VinculosService';
     export default {
-        name: 'Grupo Matricula Faixas',
-        props: {
-            grupo: {
-                type: String,
-                required: true
-            }
-        },
+        name: 'Grupo Matricula',
         data() {
             return {
-                filter: {},
-                database: [],              
+                database: [], 
+                dataslave: [],               
                 registro: null,
  
                 pagina: 0, 
                 firstRow: 0,
-                pageSize: 5,
+                pageSize: 15,
                 selected: {},
                 onDialog: false,
                 totalElementos: 0
             }
         },
         methods: {
-            async getPagina(){ 
-                this.filter.grupo = this.grupo;            
-                await service.filter(this.filter, this.pagina, this.pageSize)
+            async getPagina(){
+                await service.findAll(this.pagina, this.pageSize)
                     .then(({ data }) => {
                         this.database        = data.content;  
                         this.pageSize        = data.pageable.pageSize;
@@ -101,7 +96,6 @@
                 );
             },
             async salvarRegistro(){
-                this.selected.grupo = this.grupo;
                 await service.save(this.selected)
                 .then(({ data }) => {
                     this.$toast.add({ 
